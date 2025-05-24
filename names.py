@@ -40,7 +40,9 @@ class Names:
 
     def __init__(self):
         """Initialise names list."""
+        self.names_list = []
         self.error_code_count = 0  # how many error codes have been declared
+
 
     def unique_error_codes(self, num_error_codes):
         """Return a list of unique integer error codes."""
@@ -50,20 +52,37 @@ class Names:
         return range(self.error_code_count - num_error_codes,
                      self.error_code_count)
 
+
     def query(self, name_string):
         """Return the corresponding name ID for name_string.
 
         If the name string is not present in the names list, return None.
         """
+        if name_string not in self.names_list:
+            return None
+        return self.names_list.index(name_string)
+
 
     def lookup(self, name_string_list):
         """Return a list of name IDs for each name string in name_string_list.
 
         If the name string is not present in the names list, add it.
         """
+        id_list = []
+        for i in range(len(name_string_list)):
+            name = name_string_list[i]
+            id = self.query(name)
+            if not id:
+                self.names_list.append(name)
+            id_list.append(self.names_list.index(name))
+        return id_list
 
     def get_name_string(self, name_id):
         """Return the corresponding name string for name_id.
 
         If the name_id is not an index in the names list, return None.
         """
+        if name_id >= len(self.names_list):
+            return None
+        return self.names_list[name_id]
+    
